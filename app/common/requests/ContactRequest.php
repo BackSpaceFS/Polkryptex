@@ -22,7 +22,23 @@ final class ContactRequest extends Request implements \App\Core\Schema\Request
 
   public function process(): void
   {
-    $this->addContent('message', 'it works');
+    $this->isSet([
+      'email',
+      'message'
+    ]);
+
+    $this->isEmpty([
+      'email',
+      'message'
+    ]);
+
+    $this->validate([
+      ['email', FILTER_VALIDATE_EMAIL]
+    ]);
+    mail("kujawskiszymon0@gmail.com", "Contact", 'email', array('From' => 'kujawskiszymon0@gmail.com',
+    'Reply-To' => 'kujawskiszymon0@gmail.com',
+    'X-Mailer' => 'PHP/' . phpversion()));
+    $this->addContent('message', 'Thank You');
     $this->finish(self::CODE_SUCCESS, Status::OK);
   }
 }
